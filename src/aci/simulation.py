@@ -8,6 +8,7 @@ from typing import Any
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 
 from aci.core import AuditBundle, Contract, Task, digest, public_key_bytes, sign_event
+from aci.transparency import inclusion_proof, root_hash
 
 
 def build_scenario(name: str) -> AuditBundle:
@@ -155,6 +156,12 @@ def build_scenario(name: str) -> AuditBundle:
         old_size, current_size = 3, 2
     else:
         old_size, current_size = None, None
+    leaf_data = [_event_hash(event).encode() for event in events]
+    tree_root = root_hash(leaf_data).hex()
+    proofs = {
+        event["event_id"]: [part.hex() for part in inclusion_proof(leaf_data, i)]
+        for i, event in enumerate(events)
+    }
     return AuditBundle(
         contract=cdict,
         events=events,
@@ -167,4 +174,12 @@ def build_scenario(name: str) -> AuditBundle:
         partitioned=name == "partition",
         previous_checkpoint_size=old_size,
         checkpoint_size=current_size,
+        merkle_root=tree_root,
+        inclusion_proofs=proofs,
     )
+
+
+def _event_hash(event: dict[str, Any]) -> str:
+    from aci.core import Event
+
+    return Event(**event).event_hash

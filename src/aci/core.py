@@ -109,6 +109,8 @@ class AuditBundle:
     partitioned: bool = False
     previous_checkpoint_size: int | None = None
     checkpoint_size: int | None = None
+    merkle_root: str | None = None
+    inclusion_proofs: dict[str, list[str]] = field(default_factory=dict)
 
 
 def public_key_bytes(key: Ed25519PublicKey) -> str:
@@ -248,6 +250,44 @@ def verify_bundle(bundle: AuditBundle) -> tuple[Verdict, list[Finding]]:
                 )
             )
         actor_heads[event.actor_id] = (event.actor_sequence, event.event_hash)
+
+    if bundle.merkle_root is not None:
+        from aci.transparency import verify_inclusion
+
+        try:
+            tree_root = bytes.fromhex(bundle.merkle_root)
+            for index, event in enumerate(events):
+                proof = [bytes.fromhex(value) for value in bundle.inclusion_proofs[event.event_id]]
+                if not verify_inclusion(
+                    event.event_hash.encode(), index, len(events), proof, tree_root
+                ):
+                    findings.append(
+                        Finding(
+                            "ACI-MERKLE-INCLUSION-001",
+                            "integrity",
+                            Verdict.VIOLATION,
+                            "Event does not match its transparency inclusion proof.",
+                            (event.event_id,),
+                        )
+                    )
+        except (KeyError, ValueError):
+            findings.append(
+                Finding(
+                    "ACI-MERKLE-INCLUSION-001",
+                    "integrity",
+                    Verdict.ABSTAIN,
+                    "Transparency inclusion evidence is malformed or incomplete.",
+                )
+            )
+    else:
+        findings.append(
+            Finding(
+                "ACI-MERKLE-MISSING-001",
+                "integrity",
+                Verdict.ABSTAIN,
+                "Bundle has no transparency root and inclusion proofs.",
+            )
+        )
 
     completed: set[str] = set()
     accepted: dict[str, str] = {}

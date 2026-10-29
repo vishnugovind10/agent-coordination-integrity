@@ -42,3 +42,15 @@ def test_tampered_payload_is_detected() -> None:
     verdict, findings = verify_bundle(bundle)
     assert verdict == Verdict.VIOLATION
     assert any(f.rule_id == "ACI-SIGNATURE-001" for f in findings)
+
+
+@pytest.mark.parametrize("size", range(1, 18))
+def test_merkle_inclusion_proofs_cover_uneven_tree_sizes(size: int) -> None:
+    from aci.transparency import inclusion_proof, root_hash, verify_inclusion
+
+    leaves = [f"event-{i}".encode() for i in range(size)]
+    root = root_hash(leaves)
+    for index, leaf in enumerate(leaves):
+        proof = inclusion_proof(leaves, index)
+        assert verify_inclusion(leaf, index, size, proof, root)
+        assert not verify_inclusion(leaf + b"-changed", index, size, proof, root)

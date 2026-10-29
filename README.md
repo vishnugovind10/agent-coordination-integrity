@@ -33,7 +33,7 @@ The test suite exercises clean workflow, contract drift, delegation escalation, 
 
 - `VERIFIED` means the supplied evidence passed the checks implemented by this version under the supplied trust assumptions. `VIOLATION` requires a demonstrated rule failure. `ABSTAIN` means evidence or common state is insufficient.
 - Ed25519 and SHA-256 use `cryptography`; canonical JSON here is a deterministic restricted JSON subset. Full RFC 8785 compatibility is not claimed.
-- Witness receipts in the demo are synthetic placeholders; quorum counting is illustrative, not cryptographic witness validation. No RFC 9162 Merkle inclusion or consistency proof implementation is claimed.
+- The Merkle inclusion tree uses RFC 9162 domain separation and tree splitting for bundle-local inclusion proofs. It does not implement consistency proofs or a persistent append-only service. Witness receipts are synthetic placeholders; quorum counting is illustrative, not cryptographic witness validation.
 - Event signatures establish attribution to a key, not truthfulness, correct reasoning, lack of collusion, or external-world facts.
 - Local assignment checks and scope checks are a small standalone authority provider. An AgencyOS adapter is a future integration seam, not a live integration.
 - A2A, MCP and OpenTelemetry are integration points. This version has no protocol adapters; traces are correlation data, not signed proof.
