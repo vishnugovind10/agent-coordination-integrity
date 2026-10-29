@@ -1,0 +1,231 @@
+{
+  "contract": {
+    "workflow_id": "wf-demo-001",
+    "version": 1,
+    "root_intent_digest": "c05febdef3e0200355a2c6916647a93e7d0cb8e15d850191e338739b1ecf6476",
+    "participants": [
+      "coordinator",
+      "researcher",
+      "analyst",
+      "reviewer"
+    ],
+    "tasks": [
+      {
+        "task_id": "research",
+        "agent": "researcher",
+        "contract_digest": "2582263a0b05fe4d512459407ae4648678d4d07abf0f1fa090f9ffed1606522f",
+        "dependencies": [],
+        "required_artifact": true
+      },
+      {
+        "task_id": "analysis",
+        "agent": "analyst",
+        "contract_digest": "2883abc9a1214d8da5bdef4bae58461cc5a1fa9c8eb31b3f922cea3aa5d1a1b1",
+        "dependencies": [
+          "research"
+        ],
+        "required_artifact": true
+      }
+    ],
+    "budget": 100,
+    "witness_quorum": 2,
+    "witness_count": 3,
+    "allow_retry": false,
+    "delegation_policy": {
+      "allowed_actions": [
+        "read",
+        "compute",
+        "write"
+      ]
+    }
+  },
+  "events": [
+    {
+      "event_id": "evt-001",
+      "event_type": "workflow.created",
+      "workflow_id": "wf-demo-001",
+      "task_id": null,
+      "actor_id": "coordinator",
+      "actor_sequence": 1,
+      "previous_actor_event_hash": null,
+      "causal_parent_event_ids": [],
+      "contract_digest": "44615858be8854a1cf188ad5066e44e5734665c5db6037405eef43f658f5b034",
+      "issued_at": "2026-01-01T00:00:00Z",
+      "idempotency_key": null,
+      "payload": {
+        "contract_digest": "44615858be8854a1cf188ad5066e44e5734665c5db6037405eef43f658f5b034"
+      },
+      "signature": "af55c30d9be174bdb7bc19c0ff41c59d11c41ca0ad4aada45899aa3192c07faa685754ab35f7b88f82ba1238fa7ed3d64e972634bb5f329a619a62a143cd700b"
+    },
+    {
+      "event_id": "evt-002",
+      "event_type": "task.proposed",
+      "workflow_id": "wf-demo-001",
+      "task_id": "research",
+      "actor_id": "coordinator",
+      "actor_sequence": 2,
+      "previous_actor_event_hash": "a87b37acbfe1f87c0ce957ee1d4d3b9d801a7d3c82206ea2dcd07fac138f97c0",
+      "causal_parent_event_ids": [
+        "evt-001"
+      ],
+      "contract_digest": "44615858be8854a1cf188ad5066e44e5734665c5db6037405eef43f658f5b034",
+      "issued_at": "2026-01-01T00:00:00Z",
+      "idempotency_key": null,
+      "payload": {
+        "contract_digest": "2582263a0b05fe4d512459407ae4648678d4d07abf0f1fa090f9ffed1606522f"
+      },
+      "signature": "ebc4090f39cd9097d404d8e1a8de56733d5db083bb9b4d8a869a78f2314bd7189c597384ba3ccbcf0dc7ed8abf5b8ceba19d4cb7e7c12feba71ca1639225f30b"
+    },
+    {
+      "event_id": "evt-003",
+      "event_type": "task.accepted",
+      "workflow_id": "wf-demo-001",
+      "task_id": "research",
+      "actor_id": "researcher",
+      "actor_sequence": 1,
+      "previous_actor_event_hash": null,
+      "causal_parent_event_ids": [
+        "evt-001"
+      ],
+      "contract_digest": "44615858be8854a1cf188ad5066e44e5734665c5db6037405eef43f658f5b034",
+      "issued_at": "2026-01-01T00:00:00Z",
+      "idempotency_key": null,
+      "payload": {
+        "contract_digest": "2582263a0b05fe4d512459407ae4648678d4d07abf0f1fa090f9ffed1606522f"
+      },
+      "signature": "724699bcfd5aa8c2efd1599bd41de01c87b7de79e7f5c745b30cf5a2fdff56cb4182746373b5480efb622d5c4910255b944f582835a542f830e5197207fa4d02"
+    },
+    {
+      "event_id": "evt-004",
+      "event_type": "task.proposed",
+      "workflow_id": "wf-demo-001",
+      "task_id": "analysis",
+      "actor_id": "coordinator",
+      "actor_sequence": 3,
+      "previous_actor_event_hash": "819c2d362279f6df3d58397d5e531ec3906f0a8ca7579a967e7a7e6eb648b793",
+      "causal_parent_event_ids": [
+        "evt-001"
+      ],
+      "contract_digest": "44615858be8854a1cf188ad5066e44e5734665c5db6037405eef43f658f5b034",
+      "issued_at": "2026-01-01T00:00:00Z",
+      "idempotency_key": null,
+      "payload": {
+        "contract_digest": "2883abc9a1214d8da5bdef4bae58461cc5a1fa9c8eb31b3f922cea3aa5d1a1b1"
+      },
+      "signature": "8c925517393ef81490005911962c810699f06491fb9ddc7decc56726c98a620128b6f248ae1f9cc63cfe507259ccdec69679ddb0477f399e8b990b71e34cb40b"
+    },
+    {
+      "event_id": "evt-005",
+      "event_type": "task.accepted",
+      "workflow_id": "wf-demo-001",
+      "task_id": "analysis",
+      "actor_id": "analyst",
+      "actor_sequence": 1,
+      "previous_actor_event_hash": null,
+      "causal_parent_event_ids": [
+        "evt-001"
+      ],
+      "contract_digest": "44615858be8854a1cf188ad5066e44e5734665c5db6037405eef43f658f5b034",
+      "issued_at": "2026-01-01T00:00:00Z",
+      "idempotency_key": null,
+      "payload": {
+        "contract_digest": "2883abc9a1214d8da5bdef4bae58461cc5a1fa9c8eb31b3f922cea3aa5d1a1b1"
+      },
+      "signature": "4d66cd58ddbe66130c3ef92707b0a30b22a041100818036d17e0a0fc872ba390db9de195eca5f702c6b85d1d8c24d90107f4d97aac321da9cec52cc59d73e009"
+    },
+    {
+      "event_id": "evt-006",
+      "event_type": "task.started",
+      "workflow_id": "wf-demo-001",
+      "task_id": "research",
+      "actor_id": "researcher",
+      "actor_sequence": 2,
+      "previous_actor_event_hash": "a9b865e0ad9a61ffff68feaaba4673f2a8fce045e5e7e793fecc1a78ca232719",
+      "causal_parent_event_ids": [
+        "evt-001"
+      ],
+      "contract_digest": "44615858be8854a1cf188ad5066e44e5734665c5db6037405eef43f658f5b034",
+      "issued_at": "2026-01-01T00:00:00Z",
+      "idempotency_key": null,
+      "payload": {},
+      "signature": "b8426a441d2d1caa4986620adcf1aae747865f2ece090753612ca2d5d4b99f0d60bbe1b9e0a08236560a197d34d46249c6c86aa6d95fd48caf7bb9b65c53a80b"
+    },
+    {
+      "event_id": "evt-007",
+      "event_type": "task.completed",
+      "workflow_id": "wf-demo-001",
+      "task_id": "research",
+      "actor_id": "researcher",
+      "actor_sequence": 3,
+      "previous_actor_event_hash": "ea977c955bc90994920d1ac138ecb4fc4346ee7ebb0499c662ae20ff35921342",
+      "causal_parent_event_ids": [
+        "evt-001"
+      ],
+      "contract_digest": "44615858be8854a1cf188ad5066e44e5734665c5db6037405eef43f658f5b034",
+      "issued_at": "2026-01-01T00:00:00Z",
+      "idempotency_key": null,
+      "payload": {
+        "contract_digest": "2582263a0b05fe4d512459407ae4648678d4d07abf0f1fa090f9ffed1606522f",
+        "artifact_digest": "b9300761b57cfeb3afdf64a1055cef79f7705568d1b82b03be6a7d5da0563e84"
+      },
+      "signature": "8c0fd364011fc72ea570503026395445dfcbdc1929443f8beb53cfed1920fae90d44c3e69760743c8f39af73a6c22eda8f043ffc18d6009e34bfbbe358ea5406"
+    },
+    {
+      "event_id": "evt-008",
+      "event_type": "task.started",
+      "workflow_id": "wf-demo-001",
+      "task_id": "analysis",
+      "actor_id": "analyst",
+      "actor_sequence": 2,
+      "previous_actor_event_hash": "d930ab2a65d26996666ac25e9d00e791a3884c44d3b2767990bd6e80ef915801",
+      "causal_parent_event_ids": [
+        "evt-007"
+      ],
+      "contract_digest": "44615858be8854a1cf188ad5066e44e5734665c5db6037405eef43f658f5b034",
+      "issued_at": "2026-01-01T00:00:00Z",
+      "idempotency_key": null,
+      "payload": {},
+      "signature": "2dd7ff789c8b43b916b35ba16f9b78bf9ac91b8b41ac58418395b84e7962542f5274acd0f3545613479ce3b47008586d0b665ce87453a3a08ebbb6c71cc7760a"
+    },
+    {
+      "event_id": "evt-009",
+      "event_type": "task.completed",
+      "workflow_id": "wf-demo-001",
+      "task_id": "analysis",
+      "actor_id": "analyst",
+      "actor_sequence": 3,
+      "previous_actor_event_hash": "ef504457e984aa41580f0c7edff4acc8fc05deaab2310a05ef9edcf66655e342",
+      "causal_parent_event_ids": [
+        "evt-007"
+      ],
+      "contract_digest": "44615858be8854a1cf188ad5066e44e5734665c5db6037405eef43f658f5b034",
+      "issued_at": "2026-01-01T00:00:00Z",
+      "idempotency_key": null,
+      "payload": {
+        "contract_digest": "2883abc9a1214d8da5bdef4bae58461cc5a1fa9c8eb31b3f922cea3aa5d1a1b1",
+        "artifact_digest": "be169733fabe995d9ad4eea54cb448eae9f461d7ac51ee5d53f314301cdce613"
+      },
+      "signature": "daffc7494106d01a994f6c1ca70693e99aac1da408aa3945439ebb91ce195d98a79c28068ebed7b518a0c2397b1648fda9285dbb235888b5d2382bd94fff320d"
+    }
+  ],
+  "public_keys": {
+    "coordinator": "8a88e3dd7409f195fd52db2d3cba5d72ca6709bf1d94121bf3748801b40f6f5c",
+    "researcher": "8139770ea87d175f56a35466c34c7ecccb8d8a91b4ee37a25df60f5b8fc9b394",
+    "analyst": "ed4928c628d1c2c6eae90338905995612959273a5c63f93636c14614ac8737d1",
+    "reviewer": "ca93ac1705187071d67b83c7ff0efe8108e8ec4530575d7726879333dbdabe7c"
+  },
+  "witness_receipts": [
+    {
+      "witness_id": "witness-a",
+      "checkpoint_hash": "synthetic"
+    },
+    {
+      "witness_id": "witness-b",
+      "checkpoint_hash": "synthetic"
+    }
+  ],
+  "missing_evidence": false,
+  "partitioned": false,
+  "previous_checkpoint_size": null,
+  "checkpoint_size": null
+}
